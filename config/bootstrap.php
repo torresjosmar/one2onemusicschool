@@ -220,3 +220,4 @@ if (Configure::read('debug')) {
 if (Configure::read('debug')) {
     Plugin::load('CakeDC/Mixer', ['bootstrap' => true, 'routes' => true]);
 }
+
