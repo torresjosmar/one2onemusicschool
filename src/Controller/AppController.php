@@ -45,6 +45,12 @@ class AppController extends Controller
             'enableBeforeRedirect' => false,
         ]);
         $this->loadComponent('Flash');
+        $this->loadComponent('Auth', [
+            'loginAction' => ['controller'=>'Usuario','action'=>'login'],
+            'authError' => 'Por Favor inicie sesion para poder acceder',
+            'LoginRedirect' => [ 'controller' => 'Usuario','action'=>'index' ],
+            'LogoutRedirect' => [ 'controller' => 'Pages','action'=>'home']
+        ]);
 
         /*
          * Enable the following components for recommended CakePHP security settings.
@@ -52,5 +58,16 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security');
         //$this->loadComponent('Csrf');
+    }
+
+    public function beforeFilter(Event $event)
+    {
+        $this->Auth->allow(['home','login','registro']); //vistas disponibles sin logeo de usuario
+        $this->set('current_user',$this->Auth->user());
+    }
+
+    public function isAuthorized($user)
+    {
+        return true;
     }
 }
