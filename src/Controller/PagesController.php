@@ -66,4 +66,16 @@ class PagesController extends AppController
             throw new NotFoundException();
         }
     }
+
+    public function home (){
+
+        $this->viewBuilder()->setLayout('default');
+        $this->set('title','home');
+    }
+
+    public function list (){
+        $this->viewBuilder()->setLayout('default');
+        $this->set('title','Listado de profesores');
+    }
+
 }

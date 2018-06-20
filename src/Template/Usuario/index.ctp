@@ -1,2 +1,18 @@
-<h1>Perfil de usuario</h1>
-<?php echo $this->Html->link('Cerrar sesion',['controller'=> 'usuario', 'action' => 'logout']); ?>
+
+ <?php
+
+
+if($current_user['id_rol']==2)//rol de profesor 
+{
+ echo $this->element('profesorprofile');
+}
+
+
+
+if($current_user['id_rol']==3)//rol de alumno 
+{
+ echo $this->element('alumnoprofile');
+}
+ 
+ 
+ ?>

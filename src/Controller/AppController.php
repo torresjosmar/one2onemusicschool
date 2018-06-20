@@ -62,7 +62,7 @@ class AppController extends Controller
 
     public function beforeFilter(Event $event)
     {
-        $this->Auth->allow(['home','login','registro']); //vistas disponibles sin logeo de usuario
+        $this->Auth->allow(['home','login','registro','list']); //vistas disponibles sin logeo de usuario
         $this->set('current_user',$this->Auth->user());
     }
 

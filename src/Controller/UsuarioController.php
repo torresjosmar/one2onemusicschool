@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\ORM\TableRegistry;
 
 /**
  * Usuario Controller
@@ -13,10 +14,60 @@ class UsuarioController extends AppController
     public function index() // metodo utilizado para el perfil de usuario
     {
        $this->set('title','perfil de usuario');
+       $loguser = $this->Auth->user(); // informacion de usuario logeado
+       $session = $this->request->session();
+
+       if($loguser['id_rol'] == 1) // administrador 
+       {
+        
+       }
+
+       if($loguser['id_rol'] == 2) //profesor
+       {
+
+       }
+
+       if($loguser['id_rol'] == 3) //alumno
+       {
+            $query = $this->Usuario->find('all')
+                     ->select(['alumno.idalumno','alumno.nombres','alumno.apellidos','alumno.edad','alumno.telefono_celular','alumno.telefono_fijo','alumno.foto_perfil','alumno.nombre_responsable','alumno.apellido_responsable','alumno.subcategoria_idsubcategoria','alumno.provincia_idprovincia'])
+                     ->join([
+                        'alumno' => [
+                            'table' => 'alumno',
+                            'conditions' => 'idusuario = alumno.usuario_idusuario'
+                        ]
+                     ]);
+
+            foreach($query as $row)
+            {
+                $result[] = $row;
+            }         
+
+            $this->set('info_alumno',$result); // informacion general del alumno
+
+            $this->requestAction('/categoria/getcategorias'); // informacion de categorias y subcategorias de cursos
+            $this->set('infocategorias',$session->consume('info'));
+
+            if(!isset($result[0]->alumno['subcategoria_idsubcategoria']) || !isset($result[0]->alumno['provincia_idprovincia']))
+            {
+                $this->Flash->warning('Por Favor completa tu informacion personal');
+            }
+            
+       }
+
+       
+
+
+
     }
 
     public function registro()
     {
+
+$this->viewBuilder()->setLayout('registro');
+        $this->set('title','registro');
+
+
         $this->set('title','Registro');
         $session = $this->request->session();
         $usuario = $this->Usuario->newEntity();
@@ -88,6 +139,7 @@ class UsuarioController extends AppController
 
     public function login()
     {
+        $this->viewBuilder()->setLayout('login');
         $this->set('title','Login');
         if($this->request->is('post'))
         {
