@@ -20,7 +20,10 @@
     <?= $this->fetch('script') ?>
 </head>
 <body>
-	<?= $this->Flash->render() ?>
+    <?= $this->Flash->render() ?>
+    <?= $this->Flash->render('auth') ?>
+    
+    
 <div class="row" id="fondologin" style="height: 100%;width: 100%; max-width: 100%;">
 	<div class="col-md-4">
 		

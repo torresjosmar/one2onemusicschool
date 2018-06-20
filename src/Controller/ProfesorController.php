@@ -27,4 +27,26 @@ class ProfesorController extends AppController
 
         $this->redirect(['controller'=>'usuario','action'=>'registro']);
     }
+
+    public function setdescripcion()
+    {
+        $session = $this->request->session();
+        $request = $session->consume('info');
+        $profesor = $this->Profesor->newEntity();
+        $profesor->idprofesor = $request['id_profesor'];
+        $profesor->descripcion = $request['profesor_descripcion'];
+        $profesor->video_presentacion = $request['video_url'];
+        
+        if($this->Profesor->save($profesor))
+        {
+            $this->Flash->success('Información Actualizada');
+        }
+
+        else
+        {
+            $this->Flash->error('Error al Actualizar Información');
+        }
+
+        $this->redirect(['controller'=>'usuario','action'=>'registro']);
+    }
 }

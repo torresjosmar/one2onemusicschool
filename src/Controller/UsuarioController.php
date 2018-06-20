@@ -24,7 +24,60 @@ class UsuarioController extends AppController
 
        if($loguser['id_rol'] == 2) //profesor
        {
+  
 
+        if ($this->request->is('post'))
+        {
+            $request = $this->request->data;
+            
+            if(isset($request['profesor_descripcion'])) // actualizar descripcion
+            {
+                $session->write('info',$request);
+                $this->requestAction('/profesor/setdescripcion'); // formacion academica del profesor
+            }
+            if(isset($request['profesor_formacion']))
+            {
+                $session->write('info',$request);
+                $this->requestAction('/formacionacademica/setnewformacionacademica'); // agregar formacion academica del profesor
+            }
+            if(isset($request['idformacionacademica']))
+            {
+                $session->write('info',$request);
+                $this->requestAction('/formacionacademica/delformacionacademica'); // eliminar formacion academica del profesor
+            }
+            if(isset($request['profesor_trayectoria']))
+            {
+                $session->write('info',$request);
+                $this->requestAction('/trayectoria/setnewtrayectoria'); // agregar trayectoria del profesor
+            }
+            if(isset($request['idtrayectoria']))
+            {
+                $session->write('info',$request);
+                $this->requestAction('/trayectoria/deltrayectoria'); // eliminar trayectoria del profesor
+            }
+        }
+
+        $query = $this->Usuario->find('all')
+                     ->select(['profesor.idprofesor','profesor.nombres','profesor.apellidos','profesor.edad','profesor.telefono_celular','profesor.telefono_fijo','profesor.foto_perfil','profesor.especialidad','profesor.descripcion','profesor.video_presentacion','profesor.provincia_idprovincia','profesor.url_facebook','profesor.url_twitter','profesor.url_instagram'])
+                     ->join([
+                        'profesor' => [
+                            'table' => 'profesor',
+                            'conditions' => 'idusuario = profesor.usuario_idusuario'
+                        ]
+                     ]);
+
+            foreach($query as $row)
+            {
+                $result[] = $row;
+            }       
+
+        $this->set('info_profesor',$result); // informacion general del profesor
+        $session->write('info',$result[0]->profesor['idprofesor']);
+        $this->requestAction('/formacionacademica/getformacionacademica'); // formacion academica del profesor
+        $this->set('formacionacademica',$session->consume('info'));
+        $session->write('info',$result[0]->profesor['idprofesor']);
+        $this->requestAction('/trayectoria/gettrayectoria'); // formacion academica del profesor
+        $this->set('trayectoria',$session->consume('info'));
        }
 
        if($loguser['id_rol'] == 3) //alumno

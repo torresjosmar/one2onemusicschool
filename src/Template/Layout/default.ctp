@@ -57,7 +57,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         
 
 </head>
-<body>
+<body style="padding-right: 0 !important;">
     
 
     	<!-- Start Header Area -->
@@ -155,11 +155,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
       <?= $this->Flash->render() ?>
     
         <?= $this->fetch('content') ?>
-
-
-
-
-
 			<!-- Start  Footer  Area -->	
 			<footer id="footer-area">
 				<!-- Start Footer Top Area -->	
